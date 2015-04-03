@@ -1,3 +1,5 @@
+/.gitignore
+
 # Data Folders
 /yelp_csv
 /yelp_json
