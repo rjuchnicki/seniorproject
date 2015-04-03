@@ -1,0 +1,10 @@
+# Data Folders
+/yelp_csv
+/yelp_json
+
+# Local Python files
+/datanalysis.py
+/jsontocsvconverter.py
+
+# Local documentation files
+/Keys_Reviews.txt
