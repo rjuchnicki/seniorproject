@@ -1,12 +1,12 @@
 # Robert Juchnicki													   04/02/15
 #
-# Utilities to build and analyze key-value databases for Yelp Dataset Challenge
-# datasets. This might be moved into a database system with query support in 
-# the future.
+# Subroutines to build key-value databases from Yelp Dataset Challenge datasets 
+# stored in csv format. Databases are saved using the pickle module.The data 
+# might be moved into a database system with built-in query support in the 
+# future.
 
 
 import csv
-import numpy as np
 import pickle
 
 from ast import literal_eval
@@ -61,21 +61,6 @@ def create_db(filename, csv_indices, db_key, fields):
 	return db
 
 
-def db_average(db, field):
-	res = 0.0
-	n = 0
-
-	for key in db:
-		res += db[key][field]
-		n += 1
-
-	return res/n
-
-
-def db_median(db, field):
-	return np.median(np.array([db[key][field] for key in db]))
-
-
 # {user_id: {'yelping_since':_, 'review_count':_, 'average_stars':_, 'elite':_, 'name':_}...}
 user_fields = ['yelping_since', 'review_count', 'average_stars', 'elite', 'name']
 user_db = create_db('yelp_csv\yelp_academic_dataset_user.csv', user_csv_indices, 'user_id', user_fields)
@@ -96,19 +81,5 @@ for key in user_db:
 		errors.append(key)
 
 
-print "Number of errors", len(errors)
-
-for el in errors:
-	user_db.pop(el, None)
-
-f = open('user_db','w')
-user_db = 
 
 
-print "Average Review Count:", db_average(user_db, 'review_count')
-print "Average Stars:", db_average(user_db, 'average_stars')
-print "Median Review Count:", db_median(user_db, 'review_count')
-print "Median Average Stars:", db_median(user_db, 'average_stars')
-
-# print "Number of elite:", elite_users
-# print "Number of elite errors:", len(errors)
