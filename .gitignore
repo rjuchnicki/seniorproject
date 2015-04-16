@@ -1,9 +1,7 @@
 # Data Folders
 /yelp_csv
 /yelp_json
+/db_pickled
 
 # Local Python files
 /jsontocsvconverter.py
-
-# Local documentation files
-/Keys_Reviews.txt
