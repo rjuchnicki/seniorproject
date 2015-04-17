@@ -184,10 +184,17 @@ def create_db(filename, csv_indices, db_key, fields):
 	return db
 
 
-# {user_id: {'yelping_since':_, 'review_count':_, 'average_stars':_, 'elite':_, 'name':_}...}
+# Save the database to file with name filename using cPickle serialization
+def save_db(db, filename):
+	f = open(filename, 'w')
+	cPickle.dump(db, f)
+	f.close()
+
+
+# Form the key-value database of users
+# {user_id: {'yelping_since':_, 'review_count':_, 'average_stars':_, 'elite':_, 'name':_}, ...}
 user_fields = ['yelping_since', 'review_count', 'average_stars', 'elite', 'name']
 user_db = create_db('yelp_csv\yelp_academic_dataset_user.csv', USER_CSV_INDICES, 'user_id', user_fields)
-
 
 elite_users = 0
 errors = []
@@ -207,6 +214,27 @@ for elt in errors:
 	user_db.pop(elt)
 
 
-user_file = open('db_pickled\user_db', 'w')
-cPickle.dump(user_db, user_file)
-user_file.close()
+# Form the key-value database of businesses
+# {busineess_id: {'field1':_, 'field2':_, ...}, ...}
+business_db = create_db('yelp_csv\yelp_academic_dataset_business.csv', BUSINESS_CSV_INDICES, 'business_id', BUSINESS_CSV_INDICES.keys())
+business_db.pop('business_id')
+
+#save_db(business_db, business_file)
+
+
+# Form the key-value database of review attributes
+# {review_id: {field1:_, field2:_, ...}, ...}
+review_attributes_fields = ['user_id' , 'review_id', 'business_id', 'stars', 'date']
+review_attributes_db = create_db('yelp_csv\yelp_academic_dataset_review.csv', REVIEW_CSV_INDICES, 'review_id', review_attributes_fields)
+review_attributes_db.pop('review_id')  
+
+#save_db(review_attributes_db, review_text_file)
+
+
+# Form the key-value database of review texts
+# {review_id: {'text':_}, ...}
+review_text_fields = ['text']
+review_text_db = create_db('yelp_csv\yelp_academic_dataset_review.csv', REVIEW_CSV_INDICES, 'review_id', review_text_fields)
+review_text_db.pop('review_id')
+
+# save_db(review_attributes_db, review_text_file)
