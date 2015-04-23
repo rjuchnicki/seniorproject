@@ -88,8 +88,7 @@ if __name__ == "__main__":
 	f = open('db_pickled' + slash + 'user_db_pickled')
 	users = cPickle.load(f)
 	f.close()
-	
-	USER_FIELDS = ['yelping_since', 'review_count', 'average_stars', 'elite', 'name']
+
 
 	num_users = len(users.keys())
 	print "Number of users in database: ", num_users
@@ -108,6 +107,10 @@ if __name__ == "__main__":
 	current_elites = 0
 	all_elite_years = []
 
+	yelping_since = {}
+	for i in xrange(2004, 2016):
+		yelping_since[i] = 0
+
 	for user in users:
 		if len(users) > 0:
 			num_elites += 1
@@ -116,9 +119,12 @@ if __name__ == "__main__":
 			if 2015 in users[user]['elite']:
 				current_elites +=1
 
+			yelping_since[int(users[user]['yelping_since'][0:4])] += 1
+
 	print "Number of users that were elite at some point: ", num_elites
 	print "Number of sers who are currently elite users: ", current_elites
 	print "All years any users were elite: ", all_elite_years
+
 
 
 	# print "Number of elite:", elite_users
