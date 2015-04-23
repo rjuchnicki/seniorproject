@@ -164,6 +164,12 @@ BUSINESS_CSV_INDICES = {
 }
 
 
+# Fields stored in the dictionary databases
+USER_FIELDS = ['yelping_since', 'review_count', 'average_stars', 'elite', 'name']
+BUSINESS_FIELDS = BUSINESS_CSV_INDICES.keys()
+REVIEW_FIELDS = review_fields = ['user_id' , 'review_id', 'business_id', 'stars', 'date', 'text']
+
+
 # Open CSV file with name filename, read through it, and return a dictionary
 # whose keys are specified by db_key. The values are dictionaries whose keys
 # are the elements of fields, and whose values are drawn from the CSV's rows
@@ -228,22 +234,20 @@ if __name__ == "__main__":
 
 	# Form the key-value database of users
 	# {user_id: {'yelping_since':'YYYY-MM', 'review_count':_, 'average_stars':_, 'elite':[year1, year2, ...], 'name':_}, ...}
-	user_fields = ['yelping_since', 'review_count', 'average_stars', 'elite', 'name']
-	user_db = create_db('yelp_csv' + slash + 'yelp_academic_dataset_user.csv', USER_CSV_INDICES, 'user_id', user_fields)
+	user_db = create_db('yelp_csv' + slash + 'yelp_academic_dataset_user.csv', USER_CSV_INDICES, 'user_id', USER_FIELDS)
 	strings_to_datatypes(user_db, ['elite', 'review_count', 'average_stars'])
 	save_db(user_db, 'db_pickled' + slash + 'user_db_pickled')
 
 
 	# Form the key-value database of businesses
 	# {busineess_id: {'field1':_, 'field2':_, ...}, ...}
-	business_db = create_db('yelp_csv' + slash + 'yelp_academic_dataset_business.csv', BUSINESS_CSV_INDICES, 'business_id', BUSINESS_CSV_INDICES.keys())
+	business_db = create_db('yelp_csv' + slash + 'yelp_academic_dataset_business.csv', BUSINESS_CSV_INDICES, 'business_id', BUSINESS_FIELDS)
 	strings_to_datatypes(business_db, ['categories', 'review_count', 'stars', 'longitude', 'latitude', 'neighborhoods'])
 	save_db(business_db, 'db_pickled' + slash + 'business_db_pickled')
 
 
 	# Form the key-value database of review attributes
 	# {review_id: {field1:_, field2:_, ...}, ...}
-	review_fields = ['user_id' , 'review_id', 'business_id', 'stars', 'date', 'text']
-	review_db = create_db('yelp_csv' + slash + 'yelp_academic_dataset_review.csv', REVIEW_CSV_INDICES, 'review_id', review_fields)
+	review_db = create_db('yelp_csv' + slash + 'yelp_academic_dataset_review.csv', REVIEW_CSV_INDICES, 'review_id', REVIEW_FIELDS)
 	strings_to_datatypes(review_db, ['stars'])
 	save_db(review_db, 'db_pickled' + slash + 'review_db_pickled')

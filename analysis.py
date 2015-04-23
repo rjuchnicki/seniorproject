@@ -8,6 +8,7 @@
 import numpy as np
 import cPickle
 
+from db_builder import USER_FIELDS, BUSINESS_FIELDS, REVIEW_FIELDS
 from sys import platform
 
 
@@ -24,10 +25,11 @@ def db_average(db, field):
 	return res/n
 
 
-# Return the median value over all id's in the database for a numerical value
-# stored under field.
-def db_median(db, field):
-	return np.median(np.array([db[key][field] for key in db]))
+# Return the value at the n-th percentile value over all id's in the database 
+# for a numerical value stored under field. n is a float between 0 and 100
+# inclusive.
+def db_percentile(db, field, n):
+	return np.percentile(np.array([db[key][field] for key in db]), n)
 
 
 # Return the min value over all id's in the database for a numerical value
@@ -52,7 +54,29 @@ def db_min(db, field):
 			res = db[keys[i]][field]
 
 	return res
-	
+
+
+# Return a list of the unique values stored under field for entries in db.
+def unique_vals(db, field):
+	res = []
+
+	for key in db:
+		if key[db][field] not in res:
+			res.append(key[db][field])
+
+	return res
+
+
+# Return a list of the unique years stored under date_field for entries in db.
+def unique_years(db, date_field):
+	res = []
+
+	for key in db:
+		if key[db][date_field] not in res:
+			res.append(key[db][date_field][0:4])
+
+	return res.sorted()
+
 
 
 if __name__ == "__main__":
@@ -61,10 +85,19 @@ if __name__ == "__main__":
 	else:
 		slash = '/'
 
-	"""print "Average Review Count:", db_average(user_db, 'review_count')
-	print "Average Stars:", db_average(user_db, 'average_stars')
-	print "Median Review Count:", db_median(user_db, 'review_count')
-	print "Median Average Stars:", db_median(user_db, 'average_stars')
+	f = open('db_pickled' + slash + 'user_db_pickled')
+	users = cPickle.load(f)
+	f.close()
+	
 
-	print "Number of elite:", elite_users
-	print "Number of elite errors:", len(errors)"""
+	print "Average Review Count:", db_average(users, 'review_count')
+	print "25-th Percentile Review Count:", db_percentile(users, 'review_count', 25)
+	print "50-th Percentile Review Count:", db_percentile(users, 'review_count', 50)
+	print "75-th Percentile Review Count:", db_percentile(users, 'review_count', 75)
+
+	print "Average Average Star Rating:", db_average(users 'average_stars')
+	print "25-th Percentile Average Stars:", db_percentile(users, 'review_count', 25)
+	print "50-th Percentile Review Count:", db_percentile(users, 'review_count', 50)
+	print "75-th Percentile Review Count:", db_percentile(users, 'review_count', 75)
+
+	# print "Number of elite:", elite_users
