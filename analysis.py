@@ -7,7 +7,6 @@
 
 import numpy as np
 import cPickle
-import ast
 
 from sys import platform
 
@@ -53,7 +52,7 @@ def db_min(db, field):
 			res = db[keys[i]][field]
 
 	return res
-
+	
 
 
 if __name__ == "__main__":
@@ -69,28 +68,3 @@ if __name__ == "__main__":
 
 	print "Number of elite:", elite_users
 	print "Number of elite errors:", len(errors)"""
-
-	f = open('db_pickled' + slash + 'business_db_pickled')
-	businesses = cPickle.load(f)
-	f.close()
-
-	one_neighborhood = []
-	multiple_neighborhoods = []
-	type_not_business = []
-	count = 0
-
-	for b in businesses:
-		count+=1
-		
-		if businesses[b]['type'] != 'business':
-			type_not_business.append(b)
-
-		if len(ast.literal_eval(businesses[b]['neighborhoods'])) == 1:
-			one_neighborhood.append(b)
-		elif len(ast.literal_eval(businesses[b]['neighborhoods'])) >1:
-			multiple_neighborhoods.append(b)
-
-	print "COUNT:", count
-	print "ONE NEIGHBORHOOD", len(one_neighborhood)
-	print "MULTIPLE NEIGHBORHOODS", len(multiple_neighborhoods)
-	print "TYPE NOT BUSINESS", len(type_not_business)

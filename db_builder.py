@@ -201,8 +201,6 @@ def save_db(db, filename):
 # Convert the data stored for each field in fields from a string to its 
 # original data type for each entry in db.
 def strings_to_datatypes(db, fields):
-	errors = []
-
 	for key in db:
 		try:
 			for field in fields:
@@ -212,8 +210,6 @@ def strings_to_datatypes(db, fields):
 
 	for elt in errors:
 		db.pop(elt)
-
-	return errors
 
 
 
@@ -241,11 +237,13 @@ if __name__ == "__main__":
 	# Form the key-value database of businesses
 	# {busineess_id: {'field1':_, 'field2':_, ...}, ...}
 	business_db = create_db('yelp_csv' + slash + 'yelp_academic_dataset_business.csv', BUSINESS_CSV_INDICES, 'business_id', BUSINESS_CSV_INDICES.keys())
+	strings_to_datatypes(business_db, ['categories', 'review_count', 'stars', 'longitude', 'latitude', 'neighborhoods'])
 	save_db(business_db, 'db_pickled' + slash + 'business_db_pickled')
 
 
-	# # Form the key-value database of review attributes
-	# # {review_id: {field1:_, field2:_, ...}, ...}
+	# Form the key-value database of review attributes
+	# {review_id: {field1:_, field2:_, ...}, ...}
 	review_fields = ['user_id' , 'review_id', 'business_id', 'stars', 'date', 'text']
 	review_db = create_db('yelp_csv' + slash + 'yelp_academic_dataset_review.csv', REVIEW_CSV_INDICES, 'review_id', review_fields)
-	save_db(review_attributes_db, 'db_pickled' + slash + 'review_db_pickled')
+	strings_to_datatypes(review_db, ['stars'])
+	save_db(review_db, 'db_pickled' + slash + 'review_db_pickled')
