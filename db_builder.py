@@ -5,12 +5,14 @@
 # moved into a database system with built-in query support in the future.
 
 
+import os
 import csv
 import cPickle
 
 from ast import literal_eval
 
 
+# Dictionary mapping user database fields to CSV columns
 USER_CSV_INDICES = {
 	'yelping_since'			:0,
 	'compliments.plain'		:1, 
@@ -37,6 +39,7 @@ USER_CSV_INDICES = {
 	'votes.useful'			:22
 }
 
+# Dictionary mapping review database fields to CSV columns
 REVIEW_CSV_INDICES = {
 	'user_id' 		:0,
 	'review_id' 	:1,
@@ -50,6 +53,7 @@ REVIEW_CSV_INDICES = {
 	'votes.useful'	:9 
 }
 
+# Dictionary mapping business database fields to CSV columns
 BUSINESS_CSV_INDICES = {
 	'attributes.Accepts Credit Cards':40,
 	'attributes.Accepts Insurance':82,
@@ -181,6 +185,8 @@ def create_db(filename, csv_indices, db_key, fields):
 	finally:
 		f.close()
 
+	db.pop(db_key)	# remove entry of labels
+
 	return db
 
 
@@ -191,50 +197,45 @@ def save_db(db, filename):
 	f.close()
 
 
-# Form the key-value database of users
-# {user_id: {'yelping_since':_, 'review_count':_, 'average_stars':_, 'elite':_, 'name':_}, ...}
-user_fields = ['yelping_since', 'review_count', 'average_stars', 'elite', 'name']
-user_db = create_db('yelp_csv\yelp_academic_dataset_user.csv', USER_CSV_INDICES, 'user_id', user_fields)
 
-elite_users = 0
-errors = []
-fields = ['elite', 'review_count', 'average_stars']
-
-for key in user_db:
-	try:
-		for field in fields:
-			user_db[key][field] = literal_eval(user_db[key][field])
-
-		if len(user_db[key]['elite']) > 0:
-			elite_users+=1
-	except:
-		errors.append(key)
-
-for elt in errors:
-	user_db.pop(elt)
+if __name__ == "__main__":
+	try: 
+		os.makedirs('db_pickled')
+	except OSError:
+   		if not os.path.isdir('db_pickled'):
+			raise
 
 
-# Form the key-value database of businesses
-# {busineess_id: {'field1':_, 'field2':_, ...}, ...}
-business_db = create_db('yelp_csv\yelp_academic_dataset_business.csv', BUSINESS_CSV_INDICES, 'business_id', BUSINESS_CSV_INDICES.keys())
-business_db.pop('business_id')
+	# Form the key-value database of users
+	# {user_id: {'yelping_since':'YYYY-MM', 'review_count':_, 'average_stars':_, 'elite':[year1, year2, ...], 'name':_}, ...}
+	user_fields = ['yelping_since', 'review_count', 'average_stars', 'elite', 'name']
+	user_db = create_db('yelp_csv\yelp_academic_dataset_user.csv', USER_CSV_INDICES, 'user_id', user_fields)
+	user_db.pop('user_id')		# remove entry of labels
 
-#save_db(business_db, business_file)
+	errors = []
+	fields = ['elite', 'review_count', 'average_stars']
+
+	for key in user_db:
+		try:
+			for field in fields:
+				user_db[key][field] = literal_eval(user_db[key][field])
+		except:
+			errors.append(key)
+
+	for elt in errors:
+		user_db.pop(elt)
+
+	save_db(user_db, 'db_pickled/user_db_pickled')
 
 
-# Form the key-value database of review attributes
-# {review_id: {field1:_, field2:_, ...}, ...}
-review_attributes_fields = ['user_id' , 'review_id', 'business_id', 'stars', 'date']
-review_attributes_db = create_db('yelp_csv\yelp_academic_dataset_review.csv', REVIEW_CSV_INDICES, 'review_id', review_attributes_fields)
-review_attributes_db.pop('review_id')  
-
-#save_db(review_attributes_db, review_text_file)
+	# Form the key-value database of businesses
+	# {busineess_id: {'field1':_, 'field2':_, ...}, ...}
+	business_db = create_db('yelp_csv\yelp_academic_dataset_business.csv', BUSINESS_CSV_INDICES, 'business_id', BUSINESS_CSV_INDICES.keys())
+	save_db(business_db, 'db_pickled/business_db_pickled')
 
 
-# Form the key-value database of review texts
-# {review_id: {'text':_}, ...}
-review_text_fields = ['text']
-review_text_db = create_db('yelp_csv\yelp_academic_dataset_review.csv', REVIEW_CSV_INDICES, 'review_id', review_text_fields)
-review_text_db.pop('review_id')
-
-# save_db(review_attributes_db, review_text_file)
+	# Form the key-value database of review attributes
+	# {review_id: {field1:_, field2:_, ...}, ...}
+	review_fields = ['user_id' , 'review_id', 'business_id', 'stars', 'date']
+	review_db = create_db('yelp_csv\yelp_academic_dataset_review.csv', REVIEW_CSV_INDICES, 'review_id', review_attributes_fields)
+	save_db(review_attributes_db, 'db_pickled/review_db_pickled')
