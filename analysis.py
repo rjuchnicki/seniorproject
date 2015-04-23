@@ -6,7 +6,10 @@
 
 
 import numpy as np
-import pickle
+import cPickle
+import ast
+
+from sys import platform
 
 
 # Return the average value over all id's in the database for a numerical value
@@ -54,6 +57,11 @@ def db_min(db, field):
 
 
 if __name__ == "__main__":
+	if platform == 'win32':
+		slash = '\\'
+	else:
+		slash = '/'
+
 	"""print "Average Review Count:", db_average(user_db, 'review_count')
 	print "Average Stars:", db_average(user_db, 'average_stars')
 	print "Median Review Count:", db_median(user_db, 'review_count')
@@ -61,3 +69,28 @@ if __name__ == "__main__":
 
 	print "Number of elite:", elite_users
 	print "Number of elite errors:", len(errors)"""
+
+	f = open('db_pickled' + slash + 'business_db_pickled')
+	businesses = cPickle.load(f)
+	f.close()
+
+	one_neighborhood = []
+	multiple_neighborhoods = []
+	type_not_business = []
+	count = 0
+
+	for b in businesses:
+		count+=1
+		
+		if businesses[b]['type'] != 'business':
+			type_not_business.append(b)
+
+		if len(ast.literal_eval(businesses[b]['neighborhoods'])) == 1:
+			one_neighborhood.append(b)
+		elif len(ast.literal_eval(businesses[b]['neighborhoods'])) >1:
+			multiple_neighborhoods.append(b)
+
+	print "COUNT:", count
+	print "ONE NEIGHBORHOOD", len(one_neighborhood)
+	print "MULTIPLE NEIGHBORHOODS", len(multiple_neighborhoods)
+	print "TYPE NOT BUSINESS", len(type_not_business)

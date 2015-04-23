@@ -9,6 +9,7 @@ import os
 import csv
 import cPickle
 
+from sys import platform
 from ast import literal_eval
 
 
@@ -133,10 +134,6 @@ BUSINESS_CSV_INDICES = {
 	'attributes.Waiter Service':24,
 	'attributes.Wheelchair Accessible':63,
 	'attributes.Wi-Fi':59,
-	'business_id':16,
-	'categories':9,
-	'city':61,
-	'full_address':46,
 	'hours.Friday.close':41,
 	'hours.Friday.open':8,
 	'hours.Monday.close':75,
@@ -151,6 +148,10 @@ BUSINESS_CSV_INDICES = {
 	'hours.Tuesday.open':19,
 	'hours.Wednesday.close':58,
 	'hours.Wednesday.open':93,
+	'business_id':16,
+	'categories':9,
+	'city':61,
+	'full_address':46,
 	'latitude':10,
 	'longitude':74,
 	'name':22,
@@ -197,6 +198,24 @@ def save_db(db, filename):
 	f.close()
 
 
+# Convert the data stored for each field in fields from a string to its 
+# original data type for each entry in db.
+def strings_to_datatypes(db, fields):
+	errors = []
+
+	for key in db:
+		try:
+			for field in fields:
+				db[key][field] = literal_eval(db[key][field])
+		except:
+			errors.append(key)
+
+	for elt in errors:
+		db.pop(elt)
+
+	return errors
+
+
 
 if __name__ == "__main__":
 	try: 
@@ -205,37 +224,28 @@ if __name__ == "__main__":
    		if not os.path.isdir('db_pickled'):
 			raise
 
+	if platform == 'win32':
+		slash = '\\'
+	else:
+		slash = '/'
+
 
 	# Form the key-value database of users
 	# {user_id: {'yelping_since':'YYYY-MM', 'review_count':_, 'average_stars':_, 'elite':[year1, year2, ...], 'name':_}, ...}
 	user_fields = ['yelping_since', 'review_count', 'average_stars', 'elite', 'name']
-	user_db = create_db('yelp_csv\yelp_academic_dataset_user.csv', USER_CSV_INDICES, 'user_id', user_fields)
-	user_db.pop('user_id')		# remove entry of labels
-
-	errors = []
-	fields = ['elite', 'review_count', 'average_stars']
-
-	for key in user_db:
-		try:
-			for field in fields:
-				user_db[key][field] = literal_eval(user_db[key][field])
-		except:
-			errors.append(key)
-
-	for elt in errors:
-		user_db.pop(elt)
-
-	save_db(user_db, 'db_pickled/user_db_pickled')
+	user_db = create_db('yelp_csv' + slash + 'yelp_academic_dataset_user.csv', USER_CSV_INDICES, 'user_id', user_fields)
+	strings_to_datatypes(user_db, ['elite', 'review_count', 'average_stars'])
+	save_db(user_db, 'db_pickled' + slash + 'user_db_pickled')
 
 
 	# Form the key-value database of businesses
 	# {busineess_id: {'field1':_, 'field2':_, ...}, ...}
-	business_db = create_db('yelp_csv\yelp_academic_dataset_business.csv', BUSINESS_CSV_INDICES, 'business_id', BUSINESS_CSV_INDICES.keys())
-	save_db(business_db, 'db_pickled/business_db_pickled')
+	business_db = create_db('yelp_csv' + slash + 'yelp_academic_dataset_business.csv', BUSINESS_CSV_INDICES, 'business_id', BUSINESS_CSV_INDICES.keys())
+	save_db(business_db, 'db_pickled' + slash + 'business_db_pickled')
 
 
-	# Form the key-value database of review attributes
-	# {review_id: {field1:_, field2:_, ...}, ...}
-	review_fields = ['user_id' , 'review_id', 'business_id', 'stars', 'date']
-	review_db = create_db('yelp_csv\yelp_academic_dataset_review.csv', REVIEW_CSV_INDICES, 'review_id', review_attributes_fields)
-	save_db(review_attributes_db, 'db_pickled/review_db_pickled')
+	# # Form the key-value database of review attributes
+	# # {review_id: {field1:_, field2:_, ...}, ...}
+	review_fields = ['user_id' , 'review_id', 'business_id', 'stars', 'date', 'text']
+	review_db = create_db('yelp_csv' + slash + 'yelp_academic_dataset_review.csv', REVIEW_CSV_INDICES, 'review_id', review_fields)
+	save_db(review_attributes_db, 'db_pickled' + slash + 'review_db_pickled')
