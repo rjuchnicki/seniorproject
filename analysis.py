@@ -89,15 +89,36 @@ if __name__ == "__main__":
 	users = cPickle.load(f)
 	f.close()
 	
+	USER_FIELDS = ['yelping_since', 'review_count', 'average_stars', 'elite', 'name']
 
-	print "Average Review Count:", db_average(users, 'review_count')
-	print "25-th Percentile Review Count:", db_percentile(users, 'review_count', 25)
-	print "50-th Percentile Review Count:", db_percentile(users, 'review_count', 50)
-	print "75-th Percentile Review Count:", db_percentile(users, 'review_count', 75)
+	num_users = len(users.keys())
+	print "Number of users in database: ", num_users
 
-	print "Average Average Star Rating:", db_average(users 'average_stars')
-	print "25-th Percentile Average Stars:", db_percentile(users, 'review_count', 25)
-	print "50-th Percentile Review Count:", db_percentile(users, 'review_count', 50)
-	print "75-th Percentile Review Count:", db_percentile(users, 'review_count', 75)
+	print "Average Review Count: ", db_average(users, 'review_count')
+	print "25-th Percentile Review Count: ", db_percentile(users, 'review_count', 25)
+	print "50-th Percentile Review Count: ", db_percentile(users, 'review_count', 50)
+	print "75-th Percentile Review Count: ", db_percentile(users, 'review_count', 75)
+
+	print "Average Average Star Rating: ", db_average(users, 'average_stars')
+	print "25-th Percentile Average Stars: ", db_percentile(users, 'review_count', 25)
+	print "50-th Percentile Review Count: ", db_percentile(users, 'review_count', 50)
+	print "75-th Percentile Review Count: ", db_percentile(users, 'review_count', 75)
+
+	num_elites = 0
+	current_elites = 0
+	all_elite_years = []
+
+	for user in users:
+		if len(users) > 0:
+			num_elites += 1
+			all_elite_years = list(set(all_elite_years + users[user]['elite']))
+
+			if 2015 in users[user]['elite']:
+				current_elites +=1
+
+	print "Number of users that were elite at some point: ", num_elites
+	print "Number of sers who are currently elite users: ", current_elites
+	print "All years any users were elite: ", all_elite_years
+
 
 	# print "Number of elite:", elite_users
