@@ -191,6 +191,9 @@ if __name__ == "__main__":
 	print "-------------------"
 	print
 
+	num_reviews = len(reviews.keys())
+	print "Number of businesses in database:", num_reviews, '\n'
+
 	print "Average Average Star Rating:", db_average(reviews, 'stars')
 	print "25-th Percentile Average Stars:", db_percentile(reviews, 'stars', 25)
 	print "50-th Percentile Average Stars:", db_percentile(reviews, 'stars', 50)
