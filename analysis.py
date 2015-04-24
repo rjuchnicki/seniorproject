@@ -89,6 +89,7 @@ if __name__ == "__main__":
 	users = cPickle.load(f)
 	f.close()
 
+
 	print "-----------------"
 	print " USER STATISTICS "
 	print "-----------------"
@@ -137,6 +138,7 @@ if __name__ == "__main__":
 
 	users.clear()
 
+
 	f = open('db_pickled' + slash + 'business_db_pickled')
 	businesses = cPickle.load(f)
 	f.close()
@@ -155,6 +157,8 @@ if __name__ == "__main__":
 		if businesses[b]['open'] == 'True':
 			opened += 1
 
+		categories = list(set(categories + businesses[b]['categories']))
+
 	print "Number of businesses that are open:", opened
 	print "Number of businesses that are closed:", num_businesses - opened, '\n'
 
@@ -165,10 +169,10 @@ if __name__ == "__main__":
 
 	print "Average Average Star Rating:", db_average(businesses, 'stars')
 	print "25-th Percentile Average Stars:", db_percentile(businesses, 'stars', 25)
-	print "50-th Percentile Review Count:", db_percentile(businesses, 'stars', 50)
-	print "75-th Percentile Review Count:", db_percentile(businesses, 'stars', 75), '\n'
+	print "50-th Percentile Average Stars:", db_percentile(businesses, 'stars', 50)
+	print "75-th Percentile Average Stars:", db_percentile(businesses, 'stars', 75), '\n'
 
 	print "Number of states businesses are in:", len(unique_vals(businesses, 'state'))
 	print "Number of cities businesses are in:", len(unique_vals(businesses, 'city')), '\n'
 
-	#print "Number of categories for businesses:"
+	print "Number of categories for businesses:", len(categories)
