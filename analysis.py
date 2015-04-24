@@ -91,17 +91,17 @@ if __name__ == "__main__":
 
 
 	num_users = len(users.keys())
-	print "Number of users in database: ", num_users
+	print "Number of users in database:", num_users, '\n'
 
-	print "Average Review Count: ", db_average(users, 'review_count')
-	print "25-th Percentile Review Count: ", db_percentile(users, 'review_count', 25)
-	print "50-th Percentile Review Count: ", db_percentile(users, 'review_count', 50)
-	print "75-th Percentile Review Count: ", db_percentile(users, 'review_count', 75)
+	print "Average Review Count:", db_average(users, 'review_count')
+	print "25-th Percentile Review Count:", db_percentile(users, 'review_count', 25)
+	print "50-th Percentile Review Count:", db_percentile(users, 'review_count', 50)
+	print "75-th Percentile Review Count:", db_percentile(users, 'review_count', 75), '\n'
 
-	print "Average Average Star Rating: ", db_average(users, 'average_stars')
-	print "25-th Percentile Average Stars: ", db_percentile(users, 'review_count', 25)
-	print "50-th Percentile Review Count: ", db_percentile(users, 'review_count', 50)
-	print "75-th Percentile Review Count: ", db_percentile(users, 'review_count', 75)
+	print "Average Average Star Rating:", db_average(users, 'average_stars')
+	print "25-th Percentile Average Stars:", db_percentile(users, 'review_count', 25)
+	print "50-th Percentile Review Count:", db_percentile(users, 'review_count', 50)
+	print "75-th Percentile Review Count:", db_percentile(users, 'review_count', 75), '\n'
 
 	num_elites = 0
 	current_elites = 0
@@ -121,10 +121,12 @@ if __name__ == "__main__":
 
 			yelping_since[int(users[user]['yelping_since'][0:4])] += 1
 
-	print "Number of users that were elite at some point: ", num_elites
-	print "Number of sers who are currently elite users: ", current_elites
-	print "All years any users were elite: ", all_elite_years
+	print "Number of users that were elite at some point:", num_elites
+	print "Number of sers who are currently elite users:", current_elites
+	print "All years any users were elite:", all_elite_years, '\n'
 
-
+	print "Statistics for year joining Yelp"
+	for year in yelping_since:
+		print str(year) + ':', yelping_since[year], 'users'
 
 	# print "Number of elite:", elite_users
