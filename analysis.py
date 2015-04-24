@@ -8,8 +8,8 @@
 import numpy as np
 import cPickle
 
-from db_builder import USER_FIELDS, BUSINESS_FIELDS, REVIEW_FIELDS
 from sys import platform
+from db_builder import USER_FIELDS, BUSINESS_FIELDS, REVIEW_FIELDS\
 
 
 # Return the average value over all id's in the database for a numerical value
@@ -176,3 +176,24 @@ if __name__ == "__main__":
 	print "Number of cities businesses are in:", len(unique_vals(businesses, 'city')), '\n'
 
 	print "Number of categories for businesses:", len(categories)
+
+	print '\n\n'
+
+	businesses.clear()
+
+
+	f = open('db_pickled' + slash + 'review_db_pickled')
+	reviews = cPickle.load(f)
+	f.close()
+	
+	print "-------------------"
+	print " REVIEW STATISTICS "
+	print "-------------------"
+	print
+
+	print "Average Average Star Rating:", db_average(reviews, 'stars')
+	print "25-th Percentile Average Stars:", db_percentile(reviews, 'stars', 25)
+	print "50-th Percentile Average Stars:", db_percentile(reviews, 'stars', 50)
+	print "75-th Percentile Average Stars:", db_percentile(reviews, 'stars', 75), '\n'
+
+	reviews.clear()
