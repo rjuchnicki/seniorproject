@@ -1,6 +1,6 @@
 # Robert Juchnicki                                                     04/02/15
 #
-# Code to build key-value databases from Yelp Dataset Challenge datasets stored
+# Script to build key-value databases from Yelp Dataset Challenge datasets stored
 # in CSV format. Databases are saved using the pickle module.The data might be
 # moved into a database system with built-in query support in the future.
 

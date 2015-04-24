@@ -78,7 +78,7 @@ def unique_years(db, date_field):
 	return res.sorted()
 
 
-
+b 
 if __name__ == "__main__":
 	if platform == 'win32':
 		slash = '\\'
@@ -105,8 +105,8 @@ if __name__ == "__main__":
 
 	print "Average Average Star Rating:", db_average(users, 'average_stars')
 	print "25-th Percentile Average Stars:", db_percentile(users, 'average_stars', 25)
-	print "50-th Percentile Review Count:", db_percentile(users, 'average_stars', 50)
-	print "75-th Percentile Review Count:", db_percentile(users, 'average_stars', 75), '\n'
+	print "50-th Percentile Average Stars:", db_percentile(users, 'average_stars', 50)
+	print "75-th Percentile Average Stars:", db_percentile(users, 'average_stars', 75), '\n'
 
 	num_elites = 0
 	current_elites = 0
@@ -117,14 +117,14 @@ if __name__ == "__main__":
 		yelping_since[i] = 0
 
 	for user in users:
-		if len(users) > 0:
+		yelping_since[int(users[user]['yelping_since'][0:4])] += 1
+
+		if len(users[user]['elite']) > 0:
 			num_elites += 1
 			all_elite_years = list(set(all_elite_years + users[user]['elite']))
 
 			if 2015 in users[user]['elite']:
 				current_elites +=1
-
-			yelping_since[int(users[user]['yelping_since'][0:4])] += 1
 
 	print "Number of users that were elite at some point:", num_elites
 	print "Number of users who are currently elite users:", current_elites
@@ -194,9 +194,9 @@ if __name__ == "__main__":
 	num_reviews = len(reviews.keys())
 	print "Number of businesses in database:", num_reviews, '\n'
 
-	print "Average Average Star Rating:", db_average(reviews, 'stars')
-	print "25-th Percentile Average Stars:", db_percentile(reviews, 'stars', 25)
-	print "50-th Percentile Average Stars:", db_percentile(reviews, 'stars', 50)
-	print "75-th Percentile Average Stars:", db_percentile(reviews, 'stars', 75), '\n'
+	print "Average Stars:", db_average(reviews, 'stars')
+	print "25-th Percentile Stars:", db_percentile(reviews, 'stars', 25)
+	print "50-th Percentile Stars:", db_percentile(reviews, 'stars', 50)
+	print "75-th Percentile Stars:", db_percentile(reviews, 'stars', 75), '\n'
 
 	reviews.clear()
