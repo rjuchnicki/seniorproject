@@ -43,16 +43,28 @@ if __name__ == "__main__":
 			cities[user_id] = [businesses[business_id]['city']]
 			states[user_id] = [businesses[business_id]['state']]
 
+	two_cities = 0
 	multiple_cities = 0
+
 	for user in cities:
-		if len(set(cities[user])) > 1:
+		num_cities = len(set(cities[user]))
+		if num_cities == 2:
+			two_cities+=1
+		elif num_cities > 2:
 			multiple_cities+=1
 
-	print "Users with reviews for businesses in mutliple cities:", multiple_cities
+	print "Users with reviews in two cities", two_cities
+	print "Users with reviews in more than two cities:", multiple_cities
 
+	two_states = 0
 	multiple_states = 0
+
 	for user in states:
-		if len(set(states[user])) > 1:
+		num_states = len(set(states[user]))
+		if num_states == 2:
+			two_states+=1
+		elif num_states > 2:
 			multiple_states+=1
 
-	print "Users with reviews for businesses in mutliple states:", multiple_states
+	print "Users with reviews in two states:", two_states
+	print "Users with reviews in more than two states:", multiple_states
