@@ -2,14 +2,14 @@
 #
 # Performs the initial data analysis of the Yelp Dataset Challenge data used to
 # inform the recommendation algorithms built in this project. This script uses
-# the databases built using db_builder.py and saved using the pickle module.
+# the databases built using db_builder.py and saved using the cPickle module.
 
 
 import numpy as np
 import cPickle
 
 from sys import platform
-from db_builder import USER_FIELDS, BUSINESS_FIELDS, REVIEW_FIELDS\
+from db_builder import USER_FIELDS, BUSINESS_FIELDS, REVIEW_FIELDS
 
 
 # Return the average value over all id's in the database for a numerical value
@@ -78,7 +78,7 @@ def unique_years(db, date_field):
 	return res.sorted()
 
 
-b 
+
 if __name__ == "__main__":
 	if platform == 'win32':
 		slash = '\\'
