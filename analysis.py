@@ -192,7 +192,7 @@ if __name__ == "__main__":
 	print
 
 	num_reviews = len(reviews.keys())
-	print "Number of businesses in database:", num_reviews, '\n'
+	print "Number of reviews in database:", num_reviews, '\n'
 
 	print "Mean Stars:", db_average(reviews, 'stars')
 	print "25-th Percentile Stars:", db_percentile(reviews, 'stars', 25)

@@ -5,7 +5,7 @@
 
 # Local Python files
 /jsontocsvconverter.py
-/db_builder.pyc
+/*.pyc
 
 # Output Text Files
 /basic_analysis.txt
