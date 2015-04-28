@@ -98,12 +98,12 @@ if __name__ == "__main__":
 	num_users = len(users.keys())
 	print "Number of users in database:", num_users, '\n'
 
-	print "Average Review Count:", db_average(users, 'review_count')
+	print "Mean Review Count:", db_average(users, 'review_count')
 	print "25-th Percentile Review Count:", db_percentile(users, 'review_count', 25)
 	print "50-th Percentile Review Count:", db_percentile(users, 'review_count', 50)
 	print "75-th Percentile Review Count:", db_percentile(users, 'review_count', 75), '\n'
 
-	print "Average Average Star Rating:", db_average(users, 'average_stars')
+	print "Mean Average Star Rating:", db_average(users, 'average_stars')
 	print "25-th Percentile Average Stars:", db_percentile(users, 'average_stars', 25)
 	print "50-th Percentile Average Stars:", db_percentile(users, 'average_stars', 50)
 	print "75-th Percentile Average Stars:", db_percentile(users, 'average_stars', 75), '\n'
@@ -162,12 +162,12 @@ if __name__ == "__main__":
 	print "Number of businesses that are open:", opened
 	print "Number of businesses that are closed:", num_businesses - opened, '\n'
 
-	print "Average Review Count:", db_average(businesses, 'review_count')
+	print "Mean Review Count:", db_average(businesses, 'review_count')
 	print "25-th Percentile Review Count:", db_percentile(businesses, 'review_count', 25)
 	print "50-th Percentile Review Count:", db_percentile(businesses, 'review_count', 50)
 	print "75-th Percentile Review Count:", db_percentile(businesses, 'review_count', 75), '\n'
 
-	print "Average Average Star Rating:", db_average(businesses, 'stars')
+	print "Mean Average Star Rating:", db_average(businesses, 'stars')
 	print "25-th Percentile Average Stars:", db_percentile(businesses, 'stars', 25)
 	print "50-th Percentile Average Stars:", db_percentile(businesses, 'stars', 50)
 	print "75-th Percentile Average Stars:", db_percentile(businesses, 'stars', 75), '\n'
@@ -194,7 +194,7 @@ if __name__ == "__main__":
 	num_reviews = len(reviews.keys())
 	print "Number of businesses in database:", num_reviews, '\n'
 
-	print "Average Stars:", db_average(reviews, 'stars')
+	print "Mean Stars:", db_average(reviews, 'stars')
 	print "25-th Percentile Stars:", db_percentile(reviews, 'stars', 25)
 	print "50-th Percentile Stars:", db_percentile(reviews, 'stars', 50)
 	print "75-th Percentile Stars:", db_percentile(reviews, 'stars', 75), '\n'
