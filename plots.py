@@ -75,7 +75,7 @@ if __name__ == "__main__":
 	review_count = cPickle.load(f)
 	f.close()
 
-	# # open review counts
+	# open review counts
 	# f = open('db_pickled' + slash + 'user_db_pickled')
 	# users = cPickle.load(f)
 	# f.close()
@@ -93,6 +93,7 @@ if __name__ == "__main__":
 	# cPickle.dump(review_count, f)
 	# f.close()
 
+	print "MAX REVIEW COUNT", review_count.keys()[-1]
 
 	# plot a histogram for review counts for users
 	# make the histogram in numpy
@@ -117,4 +118,55 @@ if __name__ == "__main__":
 
 	# clear the plot
 	plt.clf()
+	review_count.clear()
 
+
+
+	# open review_count for businesses
+	f = open('histogram_counts' + slash + 'business_review_count')
+	review_count = cPickle.load(f)
+	f.close()
+
+	# f = open('db_pickled' + slash + 'business_db_pickled')
+	# businesses = cPickle.load(f)
+	# f.close()
+
+	# review_count = {}
+
+	# for business in businesses:
+	# 	reviews = businesses[business]['review_count']
+	# 	if reviews in review_count:
+	# 		review_count[reviews]+=1
+	# 	else:
+	# 		review_count[reviews] = 1
+
+	# f = open('histogram_counts' + slash + 'business_review_count', 'w')
+	# cPickle.dump(review_count, f)
+	# f.close()
+
+	print "MAX REVIEW COUNT", review_count.keys()[-1]
+
+
+	# plot a histogram for review counts for users
+	# make the histogram in numpy
+	hist, bins = np.histogram(review_count.keys(), bins=100, range=(1,100), weights=review_count.values())
+
+	# plot histogram hist using matplotlib.pyplot
+	width = 0.6 * (bins[1] - bins[0])
+	center = (bins[:-1] + bins[1:]) / 2
+	plt.bar(center, hist, align='center', width=width)
+
+	# set yticks
+	plt.yticks(np.arange(0, 11000, 1000))
+	plt.xticks(np.arange(0, 105, 5))
+
+	# set labels
+	plt.suptitle("Frequency of Review Counts for Businesses", fontsize=18)
+	plt.xlabel("Review Count", fontsize=14)
+	plt.ylabel("Frequency", fontsize=14)
+
+	# save the Review Stars Histogram
+	plt.save('business_review_count_frequency.png')		
+
+	# clear the plot
+	plt.clf()
