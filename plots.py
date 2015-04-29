@@ -19,7 +19,8 @@ if __name__ == "__main__":
 
 
 
-	# open ratings_count for reviews
+	# Frequency of Star Ratings in Reviews
+	
 	f = open('histogram_counts' + slash + 'review_ratings_count')
 	ratings_count = cPickle.load(f)
 	f.close()
@@ -70,7 +71,8 @@ if __name__ == "__main__":
 
 
 
-	# open review_count for users
+	# Frequency of Review Counts for Users
+
 	f = open('histogram_counts' + slash + 'user_review_count')
 	review_count = cPickle.load(f)
 	f.close()
@@ -93,7 +95,6 @@ if __name__ == "__main__":
 	# cPickle.dump(review_count, f)
 	# f.close()
 
-	print "MAX REVIEW COUNT", review_count.keys()[-1]
 
 	# plot a histogram for review counts for users
 	# make the histogram in numpy
@@ -118,11 +119,11 @@ if __name__ == "__main__":
 
 	# clear the plot
 	plt.clf()
-	review_count.clear()
 
 
 
-	# open review_count for businesses
+	# Frequency of Review Counts for Businesses
+
 	f = open('histogram_counts' + slash + 'business_review_count')
 	review_count = cPickle.load(f)
 	f.close()
@@ -144,8 +145,6 @@ if __name__ == "__main__":
 	# cPickle.dump(review_count, f)
 	# f.close()
 
-	print "MAX REVIEW COUNT", review_count.keys()[-1]
-
 
 	# plot a histogram for review counts for users
 	# make the histogram in numpy
@@ -166,7 +165,7 @@ if __name__ == "__main__":
 	plt.ylabel("Frequency", fontsize=14)
 
 	# save the Review Stars Histogram
-	plt.save('business_review_count_frequency.png')		
+	plt.savefig('business_review_count_frequency.png')		
 
 	# clear the plot
 	plt.clf()
