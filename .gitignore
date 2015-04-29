@@ -7,5 +7,9 @@
 /jsontocsvconverter.py
 /*.pyc
 
+# Graph Outputs
+/*.png
+/*.jpg
+
 # Output Text Files
 /basic_analysis.txt
