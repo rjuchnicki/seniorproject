@@ -113,7 +113,8 @@ if __name__ == "__main__":
 	plt.ylabel("Frequency", fontsize=14)
 
 	# save the Review Stars Histogram
-	plt.save('user_review_count_frequency.png')		
+	plt.savefig('user_review_count_frequency.png')		
 
 	# clear the plot
 	plt.clf()
+
