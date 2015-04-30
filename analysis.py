@@ -90,7 +90,6 @@ if __name__ == "__main__":
 
 
 
-
 	f = open('db_pickled' + slash + 'user_db_pickled')
 	users = cPickle.load(f)
 	f.close()
