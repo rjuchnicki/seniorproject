@@ -45,7 +45,7 @@ def key_for_max_value(d):
 def determine_state(user_id, users, reviews, businesses):
 	review_info = []
 
-	for review in users[user_id]:
+	for review in users[user_id]['reviews']:
 		business_id = reviews[review]['business_id']
 		date_string = reviews[review]['date']
 		day = date(int(date_string[0:4]), int(date_string[5:7]), int(date_string[8:]))
@@ -56,7 +56,7 @@ def determine_state(user_id, users, reviews, businesses):
 
 
 	# determine the most common state among the most recent half of reviews
-	n = len(review_info) - 1
+	n = len(review_info)
 	states = {}
 	for i in xrange(n/2, n):
 		state = review_info[i][2]
