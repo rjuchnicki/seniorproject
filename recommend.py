@@ -26,7 +26,7 @@ def add_reviews_to_users(users, reviews, path):
 		i+=1
 
 	f = open(path, 'w')
-	cPickle.dump(f)
+	cPickle.dump(users, f)
 	f.close()
 
 	return
@@ -80,7 +80,7 @@ def add_current_state(users, reviews, businesses, path):
 		i+=1
 
 	f = open(path, 'w')
-	cPickle.dump(f)
+	cPickle.dump(users, f)
 	f.close()
 
 	return
@@ -109,4 +109,4 @@ if __name__ == "__main__":
 	add_reviews_to_users(users, reviews, user_path)
 
 	# Precompute a current state for each user and store it in the database
-	# add_current_state(users, reviews, businesses, user_path)
+	add_current_state(users, reviews, businesses, user_path)
