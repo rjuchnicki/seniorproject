@@ -235,7 +235,12 @@ if __name__ == "__main__":
 
 
 	# Form the key-value database of users
-	# {user_id: {'yelping_since':'YYYY-MM', 'review_count':_, 'average_stars':_, 'elite':[year1, year2, ...], 'name':_}, ...}
+	# The database is created as a dictionary in the following form:
+	# {
+	# 	user_id1: {'yelping_since':'YYYY-MM', 'review_count':_, 'average_stars':_, 'elite':[year1, year2, ...], 'name':_}, 
+	# 	user_id2: {...} 
+	# 	...
+	# }
 	user_db = create_db('yelp_csv' + slash + 'yelp_academic_dataset_user.csv', USER_CSV_INDICES, 'user_id', USER_FIELDS)
 	strings_to_datatypes(user_db, ['elite', 'review_count', 'average_stars'])
 	save_db(user_db, 'db_pickled' + slash + 'user_db_pickled')
