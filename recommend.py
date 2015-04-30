@@ -16,7 +16,7 @@ def key_for_max_value(d):
     values = list(d.values())
     keys = list(d.keys())
 
-    return keys[values.index(max(v))]
+    return keys[values.index(max(values))]
 
 # Returns the user's current state. Looks at the dates and locations of all
 # business the user has reviewed to compute the result. 
@@ -65,4 +65,4 @@ if __name__ == "__main__":
 
 
 	for user in users:
-		determine_state(user, reviews, businesses)
+		print determine_state(user, reviews, businesses)
