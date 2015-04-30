@@ -51,11 +51,15 @@ def determine_state(user_id, reviews, businesses):
 # Add the user's current state to the user database. The current state is
 # computed using determine state
 def add_current_state(users, reviews, businesses, path):
+	num_users = 366715 
+	i = 0
+
 	for user in users:
 		users[user]['current_state'] = determine_state(user, reviews, businesses)
+		print str(i) + '/' + str(num_users)
 
-	f = open(path)
-	users = cPickle.load(f)
+	f = open(path, 'w')
+	cPickle.dump(f)
 	f.close()
 
 	return
