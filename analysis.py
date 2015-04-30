@@ -233,7 +233,7 @@ if __name__ == "__main__":
 	print " REVIEW STATISTICS "
 	print "-------------------"
 	print
-
+	
 
 	num_reviews = len(reviews.keys())
 	print "Number of reviews in database:", num_reviews, '\n'
