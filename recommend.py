@@ -17,13 +17,11 @@ def add_reviews_to_users(users, reviews, path):
 	for user in users:
 		users[user]['reviews'] = []
 
-	i = 0
 	for review in reviews:
 		print 'Progress', i
 		user = reviews[review]['user_id']
 		review_list = users[user]['reviews']
 		review_list.append(review)
-		i+=1
 
 	f = open(path, 'w')
 	cPickle.dump(users, f)
@@ -71,13 +69,8 @@ def determine_state(user_id, users, reviews, businesses):
 # Add the user's current state to the user database. The current state is
 # computed using determine state
 def add_current_state(users, reviews, businesses, path):
-	num_users = 366715 
-	i = 1
-
 	for user in users:
 		users[user]['current_state'] = determine_state(user, users, reviews, businesses)
-		print str(i) + '/' + str(num_users)
-		i+=1
 
 	f = open(path, 'w')
 	cPickle.dump(users, f)
@@ -105,8 +98,12 @@ if __name__ == "__main__":
 	reviews = cPickle.load(f)
 	f.close()
 
-	# Add a list of review ids to each entry in users
-	add_reviews_to_users(users, reviews, user_path)
+	user_keys = users.key()
+
+	# Add a list of review ids to each entry in users if it does not already exist
+	if 'reviews' not in users[user_keys[0]]:
+		add_reviews_to_users(users, reviews, user_path)
 
 	# Precompute a current state for each user and store it in the database
-	add_current_state(users, reviews, businesses, user_path)
+	if 'current_state' not in users[user_keys[0]]:
+		add_current_state(users, reviews, businesses, user_path)
