@@ -11,6 +11,27 @@ from sys import platform
 from datetime import date
 
 
+# Add a field 'reviews' to entries in the user database that is a list of all
+# review ids for the user's reviews
+def add_reviews_to_users(users, reviews, path):
+	for user in users:
+		users[user]['reviews'] = []
+
+	i = 0
+	for review in reviews:
+		print 'Progress', i
+		user = reviews[review]['user_id']
+		reviews = users[user]['reviews']
+		reviews.append(review)
+		i+=1
+
+	f = open(path, 'w')
+	cPickle.dump(f)
+	f.close()
+
+	return
+
+
 # Return the key in a dictionary with the max value.
 def key_for_max_value(d): 
     values = list(d.values())
@@ -21,22 +42,21 @@ def key_for_max_value(d):
 
 # Returns the user's current state. Looks at the dates and locations of all
 # business the user has reviewed to compute the result. 
-def determine_state(user_id, reviews, businesses):
+def determine_state(user_id, users, reviews, businesses):
 	review_info = []
 
-	for review in reviews:
-		if reviews[review]['user_id'] == user_id:
-			business_id = reviews[review]['business_id']
-			date_string = reviews[review]['date']
-			day = date(int(date_string[0:4]), int(date_string[5:7]), int(date_string[8:]))
+	for review in users[user_id]:
+		business_id = reviews[review]['business_id']
+		date_string = reviews[review]['date']
+		day = date(int(date_string[0:4]), int(date_string[5:7]), int(date_string[8:]))
 
-			review_info.append((review, day, businesses[business_id]['state']))
+		review_info.append((review, day, businesses[business_id]['state']))
 
 	review_info.sort(key = lambda x: x[1])	# sort review_info tuples by date
 
 
 	# determine the most common state among the most recent half of reviews
-	n = len(review_info)
+	n = len(review_info) - 1
 	states = {}
 	for i in xrange(n/2, n):
 		state = review_info[i][2]
@@ -52,11 +72,12 @@ def determine_state(user_id, reviews, businesses):
 # computed using determine state
 def add_current_state(users, reviews, businesses, path):
 	num_users = 366715 
-	i = 0
+	i = 1
 
 	for user in users:
-		users[user]['current_state'] = determine_state(user, reviews, businesses)
+		users[user]['current_state'] = determine_state(user, users, reviews, businesses)
 		print str(i) + '/' + str(num_users)
+		i+=1
 
 	f = open(path, 'w')
 	cPickle.dump(f)
@@ -71,7 +92,8 @@ if __name__ == "__main__":
 	else:
 		slash = '/'
 
-	f = open('db_pickled' + slash + 'user_db_pickled')
+	user_path = 'db_pickled' + slash + 'user_db_pickled'
+	f = open()
 	users = cPickle.load(f)
 	f.close()
 
@@ -83,5 +105,8 @@ if __name__ == "__main__":
 	reviews = cPickle.load(f)
 	f.close()
 
+	# Add a list of review ids to each entry in users
+	add_reviews_to_users(users, reviews, user_path)
+
 	# Precompute a current state for each user and store it in the database
-	add_current_state(users, reviews, businesses, 'db_pickled' + slash + 'user_db_pickled')
+	# add_current_state(users, reviews, businesses, user_path)
