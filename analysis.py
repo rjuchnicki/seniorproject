@@ -88,6 +88,9 @@ if __name__ == "__main__":
 	else:
 		slash = '/'
 
+
+
+
 	f = open('db_pickled' + slash + 'user_db_pickled')
 	users = cPickle.load(f)
 	f.close()
@@ -98,6 +101,7 @@ if __name__ == "__main__":
 	print "-----------------"
 	print
 
+
 	num_users = len(users.keys())
 	print "Number of users in database:", num_users, '\n'
 
@@ -105,8 +109,34 @@ if __name__ == "__main__":
 	print "25-th Percentile Review Count:", db_percentile(users, 'review_count', 25)
 	print "50-th Percentile Review Count:", db_percentile(users, 'review_count', 50)
 	print "75-th Percentile Review Count:", db_percentile(users, 'review_count', 75)
+
+	for i in xrange(80,100,5):
+		print i, "Percentile Review Count:", db_percentile(users, 'review_count', i)
+
+	for i in xrange(81,85):
+		print i, "Percentile Review Count:", db_percentile(users, 'review_count', i)
+
 	print "Min Review Count:", db_min(users, 'review_count')
 	print "Max Review Count:", db_max(users, 'review_count'), '\n'
+
+
+	# Determine what percentage of users with the most reviews produce half of
+	# the reviews.
+	review_counts = [users[user]['review_count'] for user in users]
+	review_counts.sort()
+
+	total = 0
+	total_reviews = 366715 * 32.214809866
+	midpoint = int(total_reviews/2)
+	for i in xrange(0,len(review_counts)):
+		if total + review_counts[i] > midpoint:
+			midpoint_user = i - 1
+			break
+		else:
+			total += review_counts[i]
+
+	print "The top", (1 - float(midpoint_user)/float(num_users)) * 100, "% of users (by review count) produce 50% of reviews."
+
 
 	print "Mean Average Star Rating:", db_average(users, 'average_stars')
 	print "25-th Percentile Average Stars:", db_percentile(users, 'average_stars', 25)
@@ -144,14 +174,17 @@ if __name__ == "__main__":
 	users.clear()
 
 
+
 	f = open('db_pickled' + slash + 'business_db_pickled')
 	businesses = cPickle.load(f)
 	f.close()
 	
+
 	print "---------------------"
 	print " BUSINESS STATISTICS "
 	print "---------------------"
 	print
+
 
 	num_businesses = len(businesses.keys())
 	print "Number of businesses in database:", num_businesses
@@ -191,14 +224,17 @@ if __name__ == "__main__":
 	businesses.clear()
 
 
+
 	f = open('db_pickled' + slash + 'review_db_pickled')
 	reviews = cPickle.load(f)
 	f.close()
 	
+
 	print "-------------------"
 	print " REVIEW STATISTICS "
 	print "-------------------"
 	print
+
 
 	num_reviews = len(reviews.keys())
 	print "Number of reviews in database:", num_reviews, '\n'
