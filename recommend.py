@@ -18,6 +18,7 @@ def key_for_max_value(d):
 
     return keys[values.index(max(values))]
 
+
 # Returns the user's current state. Looks at the dates and locations of all
 # business the user has reviewed to compute the result. 
 def determine_state(user_id, reviews, businesses):
@@ -31,11 +32,13 @@ def determine_state(user_id, reviews, businesses):
 
 			review_info.append((review, day, businesses[business_id]['state']))
 
-	review_info.sort(key = lambda x: x[1])
-	n = len(review_info)
+	review_info.sort(key = lambda x: x[1])	# sort review_info tuples by date
 
+
+	# determine the most common state among the most recent half of reviews
+	n = len(review_info)
 	states = {}
-	for i in xrange(n/2,n):
+	for i in xrange(n/2, n):
 		state = review_info[i][2]
 		if state in states:
 			states[state] += 1
@@ -43,6 +46,19 @@ def determine_state(user_id, reviews, businesses):
 			states[state] = 1
 
 	return key_for_max_value(states)
+
+
+# Add the user's current state to the user database. The current state is
+# computed using determine state
+def add_current_state(users, reviews, businesses, path):
+	for user in users:
+		users[user]['current_state'] = determine_state(user, reviews, businesses)
+
+	f = open(path)
+	users = cPickle.load(f)
+	f.close()
+
+	return
 
 
 if __name__ == "__main__":
@@ -63,6 +79,5 @@ if __name__ == "__main__":
 	reviews = cPickle.load(f)
 	f.close()
 
-
-	for user in users:
-		print determine_state(user, reviews, businesses)
+	# Precompute a current state for each user and store it in the database
+	add_current_state('db_pickled' + slash + 'user_db_pickled')
