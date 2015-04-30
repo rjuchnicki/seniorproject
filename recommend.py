@@ -21,8 +21,8 @@ def add_reviews_to_users(users, reviews, path):
 	for review in reviews:
 		print 'Progress', i
 		user = reviews[review]['user_id']
-		reviews = users[user]['reviews']
-		reviews.append(review)
+		review_list = users[user]['reviews']
+		review_list.append(review)
 		i+=1
 
 	f = open(path, 'w')
