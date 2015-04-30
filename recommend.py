@@ -84,4 +84,4 @@ if __name__ == "__main__":
 	f.close()
 
 	# Precompute a current state for each user and store it in the database
-	add_current_state('db_pickled' + slash + 'user_db_pickled')
+	add_current_state(users, reviews, businesses, 'db_pickled' + slash + 'user_db_pickled')
