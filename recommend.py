@@ -93,7 +93,7 @@ if __name__ == "__main__":
 		slash = '/'
 
 	user_path = 'db_pickled' + slash + 'user_db_pickled'
-	f = open()
+	f = open(user_path)
 	users = cPickle.load(f)
 	f.close()
 
