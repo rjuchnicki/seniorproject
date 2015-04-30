@@ -20,7 +20,7 @@ if __name__ == "__main__":
 
 
 	# Frequency of Star Ratings in Reviews
-	
+
 	f = open('histogram_counts' + slash + 'review_ratings_count')
 	ratings_count = cPickle.load(f)
 	f.close()
@@ -106,7 +106,7 @@ if __name__ == "__main__":
 	plt.bar(center, hist, align='center', width=width)
 
 	# set yticks
-	plt.yticks(np.arange(0, 70000, 10000))
+	plt.yticks(np.arange(0, 65000, 5000))
 	plt.xticks(np.arange(0, 105, 5))
 
 	# set labels

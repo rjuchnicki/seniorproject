@@ -32,7 +32,7 @@ def db_percentile(db, field, n):
 	return np.percentile(np.array([db[key][field] for key in db]), n)
 
 
-# Return the min value over all id's in the database for a numerical value
+# Return the max value over all id's in the database for a numerical value
 # stored under field. Assume all values are positive.
 def db_max(db, field):
 	res = 0
@@ -40,9 +40,12 @@ def db_max(db, field):
 	for item in db:
 		if db[item][field] > res:
 			res = db[item][field]
+			key = item
+
+	return res
 
 
-# Return the max value over all id's in the database for a numerical value 
+# Return the min value over all id's in the database for a numerical value 
 # stored under field.
 def db_min(db, field):
 	keys = db.keys()
@@ -176,8 +179,10 @@ if __name__ == "__main__":
 	print "50-th Percentile Average Stars:", db_percentile(businesses, 'stars', 50)
 	print "75-th Percentile Average Stars:", db_percentile(businesses, 'stars', 75), '\n'
 
-	print "Number of states businesses are in:", len(unique_vals(businesses, 'state'))
-	print "Number of cities businesses are in:", len(unique_vals(businesses, 'city')), '\n'
+	cities = unique_vals(businesses, 'city')
+	states = unique_vals(businesses, 'state')
+	print "Number of states businesses are in:", len(states)
+	print "Number of cities businesses are in:", len(cities), '\n'
 
 	print "Number of categories for businesses:", len(categories)
 
