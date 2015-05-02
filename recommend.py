@@ -142,8 +142,23 @@ def attribute_vector(business_entry, attributes, categories):
 
 # Return an item similarity matrix for the all the businesses in state using the 
 # similarity measure sim.
-def compute_similarities(businesses, state, sim):
-	return
+def compute_similarities(businesses, state, sim, make_vector, attributes, categories):
+	# labels = []
+
+	# for business in businesses:
+	# 	if businesses[business] == state:
+	# 		labels.append(business)
+
+	# similarities = [[] for business in labels]
+
+	# for i in xrange(0, len(labels)):
+	# 	business1 = make_vector(labels[i], )
+	# 	for j in xrange(0, len(labels)):
+			 
+
+
+	# return similarities, labels
+
 
 
 if __name__ == "__main__":
@@ -164,6 +179,7 @@ if __name__ == "__main__":
 	f = open('db_pickled' + slash + 'review_db_pickled')
 	reviews = cPickle.load(f)
 	f.close()
+
 
 	user_keys = users.key()
 

@@ -10,9 +10,6 @@ import cPickle
 
 from sys import platform
 
-# Import from project modules
-from db_builder import USER_FIELDS, BUSINESS_FIELDS, REVIEW_FIELDS
-
 
 # Return the average value over all id's in the database for a numerical value
 # stored under field.

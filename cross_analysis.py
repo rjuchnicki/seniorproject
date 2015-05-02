@@ -8,10 +8,6 @@ import cPickle
 
 from sys import platform
 
-# Import from project modules 
-from db_builder import USER_FIELDS, BUSINESS_FIELDS, REVIEW_FIELDS
-from analysis import unique_vals
-
 
 if __name__ == "__main__":
 	if platform == 'win32':
@@ -53,9 +49,9 @@ if __name__ == "__main__":
 	for user in cities:
 		num_cities = len(set(cities[user]))
 		if num_cities == 2:
-			two_cities+=1
+			two_cities += 1
 		elif num_cities > 2:
-			multiple_cities+=1
+			multiple_cities += 1
 
 	print "Users with reviews in two cities", two_cities
 	print "Users with reviews in more than two cities:", multiple_cities
@@ -66,9 +62,9 @@ if __name__ == "__main__":
 	for user in states:
 		num_states = len(set(states[user]))
 		if num_states == 2:
-			two_states+=1
+			two_states += 1
 		elif num_states > 2:
-			multiple_states+=1
+			multiple_states += 1
 
 	print "Users with reviews in two states:", two_states
 	print "Users with reviews in more than two states:", multiple_states

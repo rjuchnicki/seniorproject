@@ -169,3 +169,4 @@ if __name__ == "__main__":
 
 	# clear the plot
 	plt.clf()
+	
