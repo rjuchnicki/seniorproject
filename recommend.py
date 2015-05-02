@@ -117,8 +117,10 @@ def normalize(v):
 def cosine_distance(x, y):
 	return dot_product(x, y) / (magnitude(x) * magnitude(y))
 
-# Return an item similarity matrix for the all the business in state using the 
-# similarity measure sim
+# Return an item similarity matrix for the all the businesses in state using the 
+# similarity measure sim.
+def compute_similarities(businesses, state, sim):
+	return
 
 
 if __name__ == "__main__":
