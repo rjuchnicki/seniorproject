@@ -9,6 +9,8 @@ import cPickle
 
 from sys import platform
 from datetime import date
+from analysis import unique_vals
+from math import sqrt
 
 
 # Add a field 'reviews' to entries in the user database that is a list of all
@@ -79,6 +81,46 @@ def add_current_state(users, reviews, businesses, path):
 	return
 
 
+# Return the dot product of vectors x and y.
+def dot_product(x, y):
+	if len(x) != len(y):
+		return None
+
+	product = 0.0
+	for i in xrange(0, len(x)):
+		product += x[i]* y[i]
+
+	return product
+
+
+# Return the magnitude of 
+def magnitude(v):
+	res = 0
+
+	for i in v:
+		res += i**2
+
+	return sqrt(res)
+
+
+# Normalize vector v
+def normalize(v):
+	mag = magnitude(v)
+
+	for i in v:
+		v[i] = i / mag
+
+	return 
+
+
+# Return the cosine distance of x and y.
+def cosine_distance(x, y):
+	return dot_product(x, y) / (magnitude(x) * magnitude(y))
+
+# Return an item similarity matrix for the all the business in state using the 
+# similarity measure sim
+
+
 if __name__ == "__main__":
 	if platform == 'win32':
 		slash = '\\'
@@ -107,3 +149,6 @@ if __name__ == "__main__":
 	# Precompute a current state for each user and store it in the database
 	if 'current_state' not in users[user_keys[0]]:
 		add_current_state(users, reviews, businesses, user_path)
+
+	states = unique_vals(users, 'current_state')
+
