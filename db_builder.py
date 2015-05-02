@@ -167,7 +167,7 @@ BUSINESS_CSV_INDICES = {
 # Fields stored in the dictionary databases
 USER_FIELDS = ['yelping_since', 'review_count', 'average_stars', 'elite', 'name']
 BUSINESS_FIELDS = BUSINESS_CSV_INDICES.keys()
-REVIEW_FIELDS = review_fields = ['user_id', 'review_id', 'business_id', 'stars', 'date', 'text']
+REVIEW_FIELDS = review_fields = ['user_id', 'review_id', 'business_id', 'stars', 'date']#, 'text']
 
 
 # Open CSV file with name filename, read through it, and return a dictionary

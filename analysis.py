@@ -216,6 +216,9 @@ if __name__ == "__main__":
 	print "Number of cities businesses are in:", len(cities), '\n'
 
 	print "Number of categories for businesses:", len(categories)
+	f = open('category_list', 'w')
+	cPickle.dump(categories, f)
+	f.close()
 
 	print '\n\n'
 

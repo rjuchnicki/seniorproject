@@ -1,7 +1,8 @@
-# Data Folders
+# Data Folders and Files
 /yelp_csv
 /yelp_json
 /db_pickled
+/category_list
 
 # Local Python files
 /jsontocsvconverter.py

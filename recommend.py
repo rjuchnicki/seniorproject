@@ -13,7 +13,7 @@ from math import sqrt
 
 # Import from project modules
 from analysis import unique_vals
-from db_builder import BUSINESS
+from db_builder import BUSINESS_CSV_INDICES
 
 
 # Add a field 'reviews' to entries in the user database that is a list of all
@@ -143,21 +143,24 @@ def attribute_vector(business_entry, attributes, categories):
 # Return an item similarity matrix for the all the businesses in state using the 
 # similarity measure sim.
 def compute_similarities(businesses, state, sim, make_vector, attributes, categories):
-	# labels = []
+	labels = []
 
-	# for business in businesses:
-	# 	if businesses[business] == state:
-	# 		labels.append(business)
+	for business in businesses:
+		if businesses[business] == state:
+			labels.append(business)
 
-	# similarities = [[] for business in labels]
+	similarities = [[] for business in labels]
 
-	# for i in xrange(0, len(labels)):
-	# 	business1 = make_vector(labels[i], )
-	# 	for j in xrange(0, len(labels)):
-			 
+	for i in xrange(0, len(labels)):
+		business1 = make_vector(businesses[labels[i]], attributes, categories)
+		for j in xrange(0, len(labels)):
+			if i != j:
+				business2 = make_vector(businesses[labels[j]], attributes, categories)
+				similarities[i][j] = sim(business1, business2)
+			else:
+				similarities[i][j] = 0
 
-
-	# return similarities, labels
+	return similarities, labels
 
 
 
@@ -191,4 +194,16 @@ if __name__ == "__main__":
 	if 'current_state' not in users[user_keys[0]]:
 		add_current_state(users, reviews, businesses, user_path)
 
+
 	states = unique_vals(users, 'current_state')
+	f = open('category_list', 'r')
+	categories = cPickle.load(f)
+	f.close()
+
+	attributes = []
+	for label in BUSINESS_CSV_INDICES:
+		if label.startswith('attributes'):
+			attributes.append(label)
+
+
+	compute_similarities(businesses, states[0], cosine_distance, attribute_vector, attributes, categories)
