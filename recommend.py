@@ -23,7 +23,6 @@ def add_reviews_to_users(users, reviews, path):
 		users[user]['reviews'] = []
 
 	for review in reviews:
-		print 'Progress', i
 		user = reviews[review]['user_id']
 		review_list = users[user]['reviews']
 		review_list.append(review)
@@ -184,7 +183,7 @@ if __name__ == "__main__":
 	f.close()
 
 
-	user_keys = users.key()
+	user_keys = users.keys()
 
 	# Add a list of review ids to each entry in users if it does not already exist
 	if 'reviews' not in users[user_keys[0]]:
@@ -206,4 +205,13 @@ if __name__ == "__main__":
 			attributes.append(label)
 
 
-	compute_similarities(businesses, states[0], cosine_distance, attribute_vector, attributes, categories)
+	M, labels = compute_similarities(businesses, states[0], cosine_distance, attribute_vector, attributes, categories)
+
+
+	count = 0
+	for i in xrange(0, len(M)):
+		for j in xrange(0, len(M)):
+			if M[i][j] > 0.0:
+				count += 1
+
+	print count
