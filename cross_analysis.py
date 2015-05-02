@@ -7,6 +7,8 @@
 import cPickle
 
 from sys import platform
+
+# Import from project modules 
 from db_builder import USER_FIELDS, BUSINESS_FIELDS, REVIEW_FIELDS
 from analysis import unique_vals
 

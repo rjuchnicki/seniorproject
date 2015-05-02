@@ -9,8 +9,11 @@ import cPickle
 
 from sys import platform
 from datetime import date
-from analysis import unique_vals
 from math import sqrt
+
+# Import from project modules
+from analysis import unique_vals
+from db_builder import BUSINESS
 
 
 # Add a field 'reviews' to entries in the user database that is a list of all
@@ -54,7 +57,6 @@ def determine_state(user_id, users, reviews, businesses):
 
 	review_info.sort(key = lambda x: x[1])	# sort review_info tuples by date
 
-
 	# determine the most common state among the most recent half of reviews
 	n = len(review_info)
 	states = {}
@@ -93,7 +95,7 @@ def dot_product(x, y):
 	return product
 
 
-# Return the magnitude of 
+# Return the magnitude of vector v.
 def magnitude(v):
 	res = 0
 
@@ -103,7 +105,7 @@ def magnitude(v):
 	return sqrt(res)
 
 
-# Normalize vector v
+# Normalize vector v. 
 def normalize(v):
 	mag = magnitude(v)
 
@@ -116,6 +118,27 @@ def normalize(v):
 # Return the cosine distance of x and y.
 def cosine_distance(x, y):
 	return dot_product(x, y) / (magnitude(x) * magnitude(y))
+
+
+# Return a vectore for a business whose entries are 0's and 1's, indicating
+# the presence or absence of an attribute or category for the business. 
+def attribute_vector(business_entry, attributes, categories):
+	v = []
+
+	for i in xrange(0,len(attributes)):
+		if attributes[i] == 'True':
+			v.append(1.0)
+		else:
+			v.append(0.0)
+
+	for i in xrange(0, len(categories)):
+		if categories[i] in business_entry['categories']:
+			v.append(1.0)
+		else:
+			v.append(0.0)
+
+	return v
+
 
 # Return an item similarity matrix for the all the businesses in state using the 
 # similarity measure sim.
@@ -153,4 +176,3 @@ if __name__ == "__main__":
 		add_current_state(users, reviews, businesses, user_path)
 
 	states = unique_vals(users, 'current_state')
-
