@@ -6,6 +6,7 @@
 
 import numpy as np
 import cPickle
+import datetime
 
 from sys import platform
 from datetime import date
@@ -96,7 +97,7 @@ def dot_product(x, y):
 
 # Return the magnitude of vector v.
 def magnitude(v):
-	res = 0
+	res = 0.0
 
 	for i in v:
 		res += i**2
@@ -116,7 +117,13 @@ def normalize(v):
 
 # Return the cosine distance of x and y.
 def cosine_distance(x, y):
-	return dot_product(x, y) / (magnitude(x) * magnitude(y))
+	m1 = magnitude(x)
+	m2 = magnitude(y)
+
+	if m1 == 0 or m2 == 0:
+		return 0
+
+	return dot_product(x, y) / (m1 * m2)
 
 
 # Return a vectore for a business whose entries are 0's and 1's, indicating
@@ -124,8 +131,8 @@ def cosine_distance(x, y):
 def attribute_vector(business_entry, attributes, categories):
 	v = []
 
-	for i in xrange(0,len(attributes)):
-		if attributes[i] == 'True':
+	for i in xrange(0, len(attributes)):
+		if business_entry[attributes[i]] == 'True':
 			v.append(1.0)
 		else:
 			v.append(0.0)
@@ -145,19 +152,21 @@ def compute_similarities(businesses, state, sim, make_vector, attributes, catego
 	labels = []
 
 	for business in businesses:
-		if businesses[business] == state:
+		if businesses[business]['state'] == state:
 			labels.append(business)
 
 	similarities = [[] for business in labels]
 
 	for i in xrange(0, len(labels)):
 		business1 = make_vector(businesses[labels[i]], attributes, categories)
+		t = t2
 		for j in xrange(0, len(labels)):
 			if i != j:
 				business2 = make_vector(businesses[labels[j]], attributes, categories)
-				similarities[i][j] = sim(business1, business2)
+				similarity = sim(business1, business2)
+				similarities[i].append(similarity)
 			else:
-				similarities[i][j] = 0
+				similarities[i].append(0.0)
 
 	return similarities, labels
 
@@ -168,6 +177,10 @@ if __name__ == "__main__":
 		slash = '\\'
 	else:
 		slash = '/'
+
+	f = open('db_pickled' + slash + 'business_db_pickled')
+	businesses = cPickle.load(f)
+	f.close()
 
 	user_path = 'db_pickled' + slash + 'user_db_pickled'
 	f = open(user_path)
@@ -195,15 +208,28 @@ if __name__ == "__main__":
 
 
 	states = unique_vals(users, 'current_state')
-	f = open('category_list', 'r')
-	categories = cPickle.load(f)
-	f.close()
+
+	categories = [
+		'Restaurants',
+		'Food Stands',
+		'Bistro',
+		'Buffets',
+		'Grocery',
+		'Drugstores', 
+		'Hotels & Travel',
+	]
 
 	attributes = []
-	for label in BUSINESS_CSV_INDICES:
-		if label.startswith('attributes'):
-			attributes.append(label)
+	prefixes = (
+		'attributes.Ambience',
+		'attributes.Good For',
+		'attributes.Good for',
+		'attributes.Dietary'
+	)
 
+	for label in BUSINESS_CSV_INDICES:
+		if (label.startswith(prefixes)):
+			attributes.append(label)
 
 	M, labels = compute_similarities(businesses, states[0], cosine_distance, attribute_vector, attributes, categories)
 
@@ -215,3 +241,8 @@ if __name__ == "__main__":
 				count += 1
 
 	print count
+
+
+	# f = open('similarity_matrix' + state, 'w')
+	# cPickle.dump(M, f)
+	# f.close()
