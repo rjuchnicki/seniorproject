@@ -213,17 +213,50 @@ if __name__ == "__main__":
 		add_current_state(users, reviews, businesses, user_path)
 
 
-	states = []
+	# attributes = []
 
-	categories = [
-		'Restaurants',
-		'Food Stands',
-		'Bistro',
-		'Buffets',
-		'Grocery',
-		'Drugstores', 
-		'Hotels & Travel',
-	]
+	# prefixes = (
+	# 	'attributes.Ambience',
+	# 	'attributes.Good For',
+	# 	'attributes.Good for',
+	# 	'attributes.Dietary'
+	# )
+
+	# for label in BUSINESS_CSV_INDICES:
+	# 	if (label.startswith(prefixes)):
+	# 		attributes.append(label)
+
+	# categories = [
+	# 	'Restaurants',
+	# 	'Food Stands',
+	# 	'Bistro',
+	# 	'Buffets',
+	# 	'Grocery',
+	# 	'Drugstores', 
+	# 	'Hotels & Travel',
+	# ]
+
+	# states = ['IL', 'WI', 'PA', 'NC']
+
+
+	# for state in states: 
+	# 	print "BUILDING MATRIX FOR", state
+
+	# 	M, labels = compute_similarities(businesses, state, cosine_distance, attribute_vector, attributes, categories)
+
+	# 	print "COMPLETED MATRIX FOR", state
+	# 	print "SAVING MATRIX FOR", state
+
+	# 	f = open('similarity_matrices' + slash + 'matrix_' + state, 'w')
+	# 	cPickle.dump(M, f)
+	# 	f.close()
+
+	# 	f = open('similarity_matrices' + slash + 'labels_' + state, 'w')
+	# 	cPickle.dump(labels, f)
+	# 	f.close()
+
+	# 	print "SAVED MATRIX FOR", state
+
 
 	attributes = []
 
@@ -238,8 +271,11 @@ if __name__ == "__main__":
 		if (label.startswith(prefixes)):
 			attributes.append(label)
 
-	states = ['IL', 'WI', 'PA', 'NC']
+	f = open('category_list', 'r')
+	categories = cPickle.load(f)
+	f.close()
 
+	states = ['IL']
 
 	for state in states: 
 		print "BUILDING MATRIX FOR", state
@@ -249,11 +285,11 @@ if __name__ == "__main__":
 		print "COMPLETED MATRIX FOR", state
 		print "SAVING MATRIX FOR", state
 
-		f = open('similarity_matrices' + slash + 'matrix_' + state, 'w')
+		f = open('similarity_matrices' + slash + 'matrix_' + state + '_3', 'w')
 		cPickle.dump(M, f)
 		f.close()
 
-		f = open('similarity_matrices' + slash + 'labels_' + state, 'w')
+		f = open('similarity_matrices' + slash + 'labels_' + state + '_3', 'w')
 		cPickle.dump(labels, f)
 		f.close()
 

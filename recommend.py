@@ -40,11 +40,11 @@ if __name__ == "__main__":
 		correct_recommendations = 0
 
 		# Load the similarity matrix for state and labels for the indices
-		f = open('similarity_matrices' + slash + 'matrix_' + state)
+		f = open('similarity_matrices' + slash + 'matrix_' + state + '_2')
 		matrix = cPickle.load(f)
 		f.close()
 
-		f = open('similarity_matrices' + slash + 'labels_' + state)
+		f = open('similarity_matrices' + slash + 'labels_' + state + '_2')
 		labels = cPickle.load(f)
 		f.close()
 
@@ -83,7 +83,7 @@ if __name__ == "__main__":
 			# Compute 3 recommended businesses for user
 			recommendations = []
 
-			if len(user_businesses) > 3:
+			if len(user_businesses) >= 3:
 				for i in xrange(0, 3):
 					bus_index = labels.index(user_businesses[i][0])
 					rec = 0
@@ -92,17 +92,35 @@ if __name__ == "__main__":
 						if matrix[bus_index][j] > matrix[bus_index][rec]:
 							rec = j
 
-					recommendations.append(labels[j])
-			else:
-				num_users -= 1
+					recommendations.append(labels[rec])
+			elif len(user_businesses) >= 2:
+				for i in xrange(0, 2):
+					bus_index = labels.index(user_businesses[i][0])
+					rec = 0
+
+					for j in xrange(0, n):
+						if matrix[bus_index][j] > matrix[bus_index][rec]:
+							rec = j
+
+					recommendations.append(labels[rec])
+			elif len(user_businesses) >= 1:
+				for i in xrange(0, 1):
+					bus_index = labels.index(user_businesses[i][0])
+					rec = 0
+
+					for j in xrange(0, n):
+						if matrix[bus_index][j] > matrix[bus_index][rec]:
+							rec = j
+
+					recommendations.append(labels[rec])
 
 
 			# See if any recommendations match a business the user has been to
 			for r in recommendations:
-				if r in user_businesses:
-					correct_recommendations += 1
-					break
-
+				for b in user_businesses:
+					if r == b[0]:
+						correct_recommendations += 1
+						break
 
 		percent_correct = float(correct_recommendations) / float(num_users)
-		print percent_correct, "%% success rate for", state, '\n'
+		print percent_correct * 100, "% success rate for", state, '\n'
