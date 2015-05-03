@@ -52,21 +52,31 @@ if __name__ == "__main__":
 
 
 	# States for which recommendations will be made for users
-	states = ['IL', 'WI', 'PA', 'NC']
+	states = ['IL', 'WI', 'PA', 'NC', 'IL2']
 
 
 	for state in states:
 		correct_recommendations = 0
 		random_correct = 0
 
-		# Load the similarity matrix for state and labels for the indices
-		f = open('similarity_matrices' + slash + 'matrix_' + state)
-		matrix = cPickle.load(f)
-		f.close()
+		if state != 'IL2'
+			# Load the similarity matrix for state and labels for the indices
+			f = open('similarity_matrices' + slash + 'matrix_' + state)
+			matrix = cPickle.load(f)
+			f.close()
 
-		f = open('similarity_matrices' + slash + 'labels_' + state)
-		labels = cPickle.load(f)
-		f.close()
+			f = open('similarity_matrices' + slash + 'labels_' + state)
+			labels = cPickle.load(f)
+			f.close()
+		else:
+			# Load the similarity matrix for the second Illinois trial
+			f = open('similarity_matrices' + slash + 'matrix_' + state[:1] + '_2')
+			matrix = cPickle.load(f)
+			f.close()
+
+			f = open('similarity_matrices' + slash + 'labels_' + state[:1] + '_2')
+			labels = cPickle.load(f)
+			f.close()
 
 		n = len(labels)
 
