@@ -3,6 +3,7 @@
 /yelp_json
 /db_pickled
 /similarity_matrices
+/category_list
 
 
 # Local Python files
