@@ -1,12 +1,13 @@
 # Robert Juchnicki                                                      4/28/15
 # 
-# Engine to build recommenders for businesses in the Yelp Dataset Challenge 
-# Data using user-based and item-based approaches. 
+# Trains the recommenders used to output recommendation in recommend.py. Also
+# adds the current state and a list of review ids for every user in the user
+# database. 
 
 
 import numpy as np
 import cPickle
-import datetime
+import os
 
 from sys import platform
 from datetime import date
@@ -186,9 +187,6 @@ if __name__ == "__main__":
 	else:
 		slash = '/'
 
-	f = open('db_pickled' + slash + 'business_db_pickled')
-	businesses = cPickle.load(f)
-	f.close()
 
 	user_path = 'db_pickled' + slash + 'user_db_pickled'
 	f = open(user_path)
@@ -240,16 +238,23 @@ if __name__ == "__main__":
 		if (label.startswith(prefixes)):
 			attributes.append(label)
 
-	states = []
+	states = ['IL', 'WI', 'PA', 'NC']
 
 
 	for state in states: 
+		print "BUILDING MATRIX FOR", state
+
 		M, labels = compute_similarities(businesses, state, cosine_distance, attribute_vector, attributes, categories)
 
-		f = open('similarity_matrices' + slash + 'matrix' + state, 'w')
+		print "COMPLETED MATRIX FOR", state
+		print "SAVING MATRIX FOR", state
+
+		f = open('similarity_matrices' + slash + 'matrix_' + state, 'w')
 		cPickle.dump(M, f)
 		f.close()
 
-		f = open('similarity_matrices' + slash + 'labels' + state, 'w')
-		cPickle.dump(M, f)
+		f = open('similarity_matrices' + slash + 'labels_' + state, 'w')
+		cPickle.dump(labels, f)
 		f.close()
+
+		print "SAVED MATRIX FOR", state

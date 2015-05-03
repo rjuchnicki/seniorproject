@@ -2,15 +2,18 @@
 /yelp_csv
 /yelp_json
 /db_pickled
-/category_list
+/similarity_matrices
+
 
 # Local Python files
 /jsontocsvconverter.py
 /*.pyc
 
+
 # Graph Outputs
 /*.png
 /*.jpg
+
 
 # Output Text Files
 /basic_analysis.txt
