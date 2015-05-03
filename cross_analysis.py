@@ -1,4 +1,4 @@
-# Robert Juchnicki														4/24/15
+# Robert Juchnicki                                                      4/24/15
 # 
 # Performs analysis and inspection of data accross databases. This script uses 
 # the databases built using db_builder.py and saved using the cPickle module.

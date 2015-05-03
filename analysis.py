@@ -1,4 +1,4 @@
-# Robert Juchnicki                                                     04/15/15
+# Robert Juchnicki                                                      04/15/15
 #
 # Performs the initial data analysis of the Yelp Dataset Challenge data used to
 # inform the recommendation algorithms built in this project. This script uses

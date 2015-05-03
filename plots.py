@@ -1,4 +1,4 @@
-# Robert Juchnicki														4/29/15
+# Robert Juchnicki                                                      4/29/15
 # 
 # Plots histograms and other diagrams for Yelp data using pyplot from the 
 # matplotlib module and the numpy module.
