@@ -6,8 +6,27 @@
 
 
 import cPickle
+import random
 
 from sys import platform
+
+
+# Return a random subset of elements in l of size k. Uses final algorithm 
+# presented on http://propersubset.com/2010/04/choosing-random-elements.html
+def random_subset(l, k):
+    res = []
+    n = 0
+
+    for item in l:
+        n += 1
+        if len(res) < k:
+            res.append(item)
+        else:
+            s = int(random.random() * n)
+            if s < k:
+                res[s] = item
+
+    return res
 
 
 if __name__ == "__main__":
@@ -38,13 +57,14 @@ if __name__ == "__main__":
 
 	for state in states:
 		correct_recommendations = 0
+		random_correct = 0
 
 		# Load the similarity matrix for state and labels for the indices
-		f = open('similarity_matrices' + slash + 'matrix_' + state + '_2')
+		f = open('similarity_matrices' + slash + 'matrix_' + state)
 		matrix = cPickle.load(f)
 		f.close()
 
-		f = open('similarity_matrices' + slash + 'labels_' + state + '_2')
+		f = open('similarity_matrices' + slash + 'labels_' + state)
 		labels = cPickle.load(f)
 		f.close()
 
@@ -58,6 +78,7 @@ if __name__ == "__main__":
 				users_in_state.append(user)
 
 		num_users = len(users_in_state)
+
 
 
 		# Compute a recommendation for each user in state
@@ -86,33 +107,19 @@ if __name__ == "__main__":
 			if len(user_businesses) >= 3:
 				for i in xrange(0, 3):
 					bus_index = labels.index(user_businesses[i][0])
-					rec = 0
+					row = matrix[bus_index]
+					recs = sorted(range(len(row)), key = lambda x: row[x])[-3:]
 
-					for j in xrange(0, n):
-						if matrix[bus_index][j] > matrix[bus_index][rec]:
-							rec = j
-
-					recommendations.append(labels[rec])
-			elif len(user_businesses) >= 2:
-				for i in xrange(0, 2):
+					for r in recs:
+						recommendations.append(labels[r])
+			else:
+				for i in xrange(0, len(user_businesses)):
 					bus_index = labels.index(user_businesses[i][0])
-					rec = 0
+					row = matrix[bus_index]
+					recs = sorted(range(len(row)), key = lambda x: row[x])[-3:]
 
-					for j in xrange(0, n):
-						if matrix[bus_index][j] > matrix[bus_index][rec]:
-							rec = j
-
-					recommendations.append(labels[rec])
-			elif len(user_businesses) >= 1:
-				for i in xrange(0, 1):
-					bus_index = labels.index(user_businesses[i][0])
-					rec = 0
-
-					for j in xrange(0, n):
-						if matrix[bus_index][j] > matrix[bus_index][rec]:
-							rec = j
-
-					recommendations.append(labels[rec])
+					for r in recs:
+						recommendations.append(labels[r])
 
 
 			# See if any recommendations match a business the user has been to
@@ -122,5 +129,18 @@ if __name__ == "__main__":
 						correct_recommendations += 1
 						break
 
+
+			# See how well a random choice performs
+			random_rec = random_subset(labels, len(recommendations))
+
+			for r in random_rec:
+				for b in user_businesses:
+					if r == b[0]:
+						random_correct += 1
+						break
+
+
 		percent_correct = float(correct_recommendations) / float(num_users)
-		print percent_correct * 100, "% success rate for", state, '\n'
+		random_percent = float(random_correct) / float(num_users)
+		print percent_correct * 100, "% success rate for", state
+		print random_percent *100, "% success rate for random choices for", state, '\n'

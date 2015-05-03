@@ -133,9 +133,12 @@ def attribute_vector(business_entry, attributes, categories):
 	v = []
 
 	for i in xrange(0, len(attributes)):
-		if business_entry[attributes[i]] == 'True':
-			v.append(1.0)
-		else:
+		try:
+			if business_entry[attributes[i]] == 'True':
+				v.append(1.0)
+			else:
+				v.append(0.0)
+		except:
 			v.append(0.0)
 
 	for i in xrange(0, len(categories)):
@@ -213,51 +216,6 @@ if __name__ == "__main__":
 		add_current_state(users, reviews, businesses, user_path)
 
 
-	# attributes = []
-
-	# prefixes = (
-	# 	'attributes.Ambience',
-	# 	'attributes.Good For',
-	# 	'attributes.Good for',
-	# 	'attributes.Dietary'
-	# )
-
-	# for label in BUSINESS_CSV_INDICES:
-	# 	if (label.startswith(prefixes)):
-	# 		attributes.append(label)
-
-	# categories = [
-	# 	'Restaurants',
-	# 	'Food Stands',
-	# 	'Bistro',
-	# 	'Buffets',
-	# 	'Grocery',
-	# 	'Drugstores', 
-	# 	'Hotels & Travel',
-	# ]
-
-	# states = ['IL', 'WI', 'PA', 'NC']
-
-
-	# for state in states: 
-	# 	print "BUILDING MATRIX FOR", state
-
-	# 	M, labels = compute_similarities(businesses, state, cosine_distance, attribute_vector, attributes, categories)
-
-	# 	print "COMPLETED MATRIX FOR", state
-	# 	print "SAVING MATRIX FOR", state
-
-	# 	f = open('similarity_matrices' + slash + 'matrix_' + state, 'w')
-	# 	cPickle.dump(M, f)
-	# 	f.close()
-
-	# 	f = open('similarity_matrices' + slash + 'labels_' + state, 'w')
-	# 	cPickle.dump(labels, f)
-	# 	f.close()
-
-	# 	print "SAVED MATRIX FOR", state
-
-
 	attributes = []
 
 	prefixes = (
@@ -270,6 +228,52 @@ if __name__ == "__main__":
 	for label in BUSINESS_CSV_INDICES:
 		if (label.startswith(prefixes)):
 			attributes.append(label)
+
+	categories = [
+		'Restaurants',
+		'Food Stands',
+		'Bistro',
+		'Buffets',
+		'Grocery',
+		'Drugstores', 
+		'Hotels & Travel',
+	]
+
+	states = ['IL', 'WI', 'PA', 'NC']
+
+
+	for state in states: 
+		print "BUILDING MATRIX FOR", state
+
+		M, labels = compute_similarities(businesses, state, cosine_distance, attribute_vector, attributes, categories)
+
+		print "COMPLETED MATRIX FOR", state
+		print "SAVING MATRIX FOR", state
+
+		f = open('similarity_matrices' + slash + 'matrix_' + state, 'w')
+		cPickle.dump(M, f)
+		f.close()
+
+		f = open('similarity_matrices' + slash + 'labels_' + state, 'w')
+		cPickle.dump(labels, f)
+		f.close()
+
+		print "SAVED MATRIX FOR", state
+
+
+	# Build a second similarity matrix for IL using all categories
+	attributes = []
+
+	prefixes = (
+		'attributes.Ambience',
+		'attributes.Good For',
+		'attributes.Good for',
+		'attributes.Dietary'
+	)
+
+	for label in BUSINESS_CSV_INDICES:
+		if (label.startswith(prefixes)):
+			attributes.append(attributes)
 
 	f = open('category_list', 'r')
 	categories = cPickle.load(f)
@@ -285,11 +289,11 @@ if __name__ == "__main__":
 		print "COMPLETED MATRIX FOR", state
 		print "SAVING MATRIX FOR", state
 
-		f = open('similarity_matrices' + slash + 'matrix_' + state + '_3', 'w')
+		f = open('similarity_matrices' + slash + 'matrix_' + state + '_2', 'w')
 		cPickle.dump(M, f)
 		f.close()
 
-		f = open('similarity_matrices' + slash + 'labels_' + state + '_3', 'w')
+		f = open('similarity_matrices' + slash + 'labels_' + state + '_2', 'w')
 		cPickle.dump(labels, f)
 		f.close()
 
